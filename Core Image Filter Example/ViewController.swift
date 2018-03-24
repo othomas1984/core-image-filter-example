@@ -10,7 +10,9 @@ import UIKit
 
 class ViewController: UIViewController {
 
+  @IBOutlet weak var intensitySlider: UISlider!
   @IBOutlet weak var imageView: UIImageView!
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     guard let imageURL = Bundle.main.url(forResource: "image", withExtension: "png"),
@@ -33,11 +35,6 @@ class ViewController: UIViewController {
     return true
   }
   
-  override func didReceiveMemoryWarning() {
-    super.didReceiveMemoryWarning()
-    // Dispose of any resources that can be recreated.
+  @IBAction func intensitySliderDidChangeValue(_ sender: UISlider) {
   }
-
-
 }
-

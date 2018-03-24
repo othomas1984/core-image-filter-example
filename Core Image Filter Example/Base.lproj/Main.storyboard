@@ -25,10 +25,19 @@
                                     <constraint firstAttribute="width" secondItem="kRF-te-EGZ" secondAttribute="height" multiplier="8:5" id="EGV-L1-nTr"/>
                                 </constraints>
                             </imageView>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="3d5-G6-fiI">
+                                <rect key="frame" x="14" y="242" width="347" height="31"/>
+                                <connections>
+                                    <action selector="intensitySliderDidChangeValue:" destination="BYZ-38-t0r" eventType="valueChanged" id="f44-Vd-knt"/>
+                                </connections>
+                            </slider>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="3d5-G6-fiI" firstAttribute="top" secondItem="kRF-te-EGZ" secondAttribute="bottom" constant="7.5" id="1UK-GU-KZy"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="3d5-G6-fiI" secondAttribute="trailing" constant="16" id="L6z-Z5-7Dn"/>
                             <constraint firstAttribute="top" secondItem="kRF-te-EGZ" secondAttribute="top" id="c0a-9i-WuZ"/>
+                            <constraint firstItem="3d5-G6-fiI" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="cMW-QH-wki"/>
                             <constraint firstItem="kRF-te-EGZ" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="fIz-N8-BW8"/>
                             <constraint firstItem="kRF-te-EGZ" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="qwK-hL-rVI"/>
                         </constraints>
@@ -36,6 +45,7 @@
                     </view>
                     <connections>
                         <outlet property="imageView" destination="kRF-te-EGZ" id="P5R-Ur-DNs"/>
+                        <outlet property="intensitySlider" destination="3d5-G6-fiI" id="15H-vh-X0M"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
