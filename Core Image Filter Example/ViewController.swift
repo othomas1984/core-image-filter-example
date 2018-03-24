@@ -43,5 +43,9 @@ class ViewController: UIViewController {
   }
   
   @IBAction func intensitySliderDidChangeValue(_ sender: UISlider) {
+    sepiafilter?.setValue(sender.value, forKey: kCIInputIntensityKey)
+    guard let cgImage = sepiaImage else { return }
+    
+    imageView.image = UIImage(cgImage: cgImage)
   }
 }
