@@ -20,19 +20,19 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kRF-te-EGZ">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="234.5"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="375"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="kRF-te-EGZ" secondAttribute="height" multiplier="8:5" id="EGV-L1-nTr"/>
+                                    <constraint firstAttribute="width" secondItem="kRF-te-EGZ" secondAttribute="height" id="EGV-L1-nTr"/>
                                 </constraints>
                             </imageView>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="3d5-G6-fiI">
-                                <rect key="frame" x="14" y="242" width="347" height="31"/>
+                                <rect key="frame" x="14" y="382.5" width="347" height="31"/>
                                 <connections>
                                     <action selector="intensitySliderDidChangeValue:" destination="BYZ-38-t0r" eventType="valueChanged" id="f44-Vd-knt"/>
                                 </connections>
                             </slider>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3j5-ai-P9R">
-                                <rect key="frame" x="270" y="280" width="89" height="30"/>
+                                <rect key="frame" x="270" y="420.5" width="89" height="30"/>
                                 <state key="normal" title="Photo Album"/>
                                 <connections>
                                     <action selector="photoAlbumButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="FGN-oQ-jyb"/>
