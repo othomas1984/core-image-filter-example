@@ -12,6 +12,7 @@ class ViewController: UIViewController {
   var context: CIContext = CIContext(options: nil)
   var sepiafilter: CIFilter? = CIFilter(name: "CISepiaTone")
   var originalImage: CIImage!
+  var filterIntensity: Float = 0.5
   
   var sepiaImage: CGImage? {
     guard let outputImage = sepiafilter?.outputImage,
@@ -35,27 +36,49 @@ class ViewController: UIViewController {
 // MARK: Actions
 extension ViewController {
   @IBAction func intensitySliderDidChangeValue(_ sender: UISlider) {
-    updateImage(intensity: sender.value)
+    filterIntensity = sender.value
+    updateImage()
   }
   @IBAction func photoAlbumButtonTapped(_ sender: UIButton) {
+    let imagePickerVC = UIImagePickerController()
+    imagePickerVC.delegate = self
+    present(imagePickerVC, animated: true)
   }
 }
 
 // MARK: Private
 extension ViewController {
-  private func updateImage(intensity: Float) {
-    sepiafilter?.setValue(intensity, forKey: kCIInputIntensityKey)
+  private func updateImage() {
+    sepiafilter?.setValue(filterIntensity, forKey: kCIInputIntensityKey)
     guard let cgImage = sepiaImage else { return }
     imageView.image = UIImage(cgImage: cgImage)
   }
   
   private func setupInitialView() {
+    imageView.clipsToBounds = true
+
     guard let imageURL = Bundle.main.url(forResource: "image", withExtension: "png"),
       let image = CIImage(contentsOf: imageURL) else { return }
     self.originalImage = image
     sepiafilter?.setValue(originalImage, forKey: kCIInputImageKey)
-    sepiafilter?.setValue(0.5, forKey: kCIInputIntensityKey)
+    sepiafilter?.setValue(filterIntensity, forKey: kCIInputIntensityKey)
     guard let cgImage = sepiaImage else { return }
     imageView.image = UIImage(cgImage: cgImage)
+  }
+}
+
+// MARK: UIImagePickerControllerDelegate
+extension ViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+  func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
+      originalImage = CIImage(image: image)
+    }
+    sepiafilter?.setValue(originalImage, forKey: kCIInputImageKey)
+    updateImage()
+    dismiss(animated: true)
+  }
+  
+  func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+    dismiss(animated: true)
   }
 }
