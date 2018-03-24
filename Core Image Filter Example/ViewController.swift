@@ -19,9 +19,13 @@ class ViewController: UIViewController {
     
     sepiaFilter.setValue(originalImage, forKey: kCIInputImageKey)
     sepiaFilter.setValue(0.5, forKey: kCIInputIntensityKey)
+    let context = CIContext(options: nil)
+
+    guard let outputImage = sepiaFilter.outputImage,
+      let filterExtent = sepiaFilter.outputImage?.extent,
+      let cgImage = context.createCGImage(outputImage, from: filterExtent) else { return }
     
-    guard let outputImage = sepiaFilter.outputImage else { return }
-    imageView.image = UIImage(ciImage: outputImage)
+    imageView.image = UIImage(cgImage: cgImage)
     
   }
   
