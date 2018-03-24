@@ -24,28 +24,36 @@ class ViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    guard let imageURL = Bundle.main.url(forResource: "image", withExtension: "png"),
-      let image = CIImage(contentsOf: imageURL) else { return }
-    
-    self.originalImage = image
-    
-    sepiafilter?.setValue(originalImage, forKey: kCIInputImageKey)
-    sepiafilter?.setValue(0.5, forKey: kCIInputIntensityKey)
-
-    guard let cgImage = sepiaImage else { return }
-    
-    imageView.image = UIImage(cgImage: cgImage)
-    
+    setupInitialView()
   }
   
   override var prefersStatusBarHidden: Bool {
     return true
   }
-  
+}
+
+// MARK: Actions
+extension ViewController {
   @IBAction func intensitySliderDidChangeValue(_ sender: UISlider) {
-    sepiafilter?.setValue(sender.value, forKey: kCIInputIntensityKey)
+    updateImage(intensity: sender.value)
+  }
+}
+
+// MARK: Private
+extension ViewController {
+  private func updateImage(intensity: Float) {
+    sepiafilter?.setValue(intensity, forKey: kCIInputIntensityKey)
     guard let cgImage = sepiaImage else { return }
-    
+    imageView.image = UIImage(cgImage: cgImage)
+  }
+  
+  private func setupInitialView() {
+    guard let imageURL = Bundle.main.url(forResource: "image", withExtension: "png"),
+      let image = CIImage(contentsOf: imageURL) else { return }
+    self.originalImage = image
+    sepiafilter?.setValue(originalImage, forKey: kCIInputImageKey)
+    sepiafilter?.setValue(0.5, forKey: kCIInputIntensityKey)
+    guard let cgImage = sepiaImage else { return }
     imageView.image = UIImage(cgImage: cgImage)
   }
 }
