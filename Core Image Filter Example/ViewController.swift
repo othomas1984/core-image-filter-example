@@ -9,23 +9,30 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+  var context: CIContext = CIContext(options: nil)
+  var sepiafilter: CIFilter? = CIFilter(name: "CISepiaTone")
+  var originalImage: CIImage!
+  
+  var sepiaImage: CGImage? {
+    guard let outputImage = sepiafilter?.outputImage,
+      let filterExtent = sepiafilter?.outputImage?.extent else { return nil }
+    return context.createCGImage(outputImage, from: filterExtent)
+  }
+  
   @IBOutlet weak var intensitySlider: UISlider!
   @IBOutlet weak var imageView: UIImageView!
   
   override func viewDidLoad() {
     super.viewDidLoad()
     guard let imageURL = Bundle.main.url(forResource: "image", withExtension: "png"),
-      let originalImage = CIImage(contentsOf: imageURL),
-      let sepiaFilter = CIFilter(name: "CISepiaTone") else { return }
+      let image = CIImage(contentsOf: imageURL) else { return }
     
-    sepiaFilter.setValue(originalImage, forKey: kCIInputImageKey)
-    sepiaFilter.setValue(0.5, forKey: kCIInputIntensityKey)
-    let context = CIContext(options: nil)
+    self.originalImage = image
+    
+    sepiafilter?.setValue(originalImage, forKey: kCIInputImageKey)
+    sepiafilter?.setValue(0.5, forKey: kCIInputIntensityKey)
 
-    guard let outputImage = sepiaFilter.outputImage,
-      let filterExtent = sepiaFilter.outputImage?.extent,
-      let cgImage = context.createCGImage(outputImage, from: filterExtent) else { return }
+    guard let cgImage = sepiaImage else { return }
     
     imageView.image = UIImage(cgImage: cgImage)
     
