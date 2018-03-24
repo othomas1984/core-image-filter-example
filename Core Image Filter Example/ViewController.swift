@@ -37,6 +37,8 @@ extension ViewController {
   @IBAction func intensitySliderDidChangeValue(_ sender: UISlider) {
     updateImage(intensity: sender.value)
   }
+  @IBAction func photoAlbumButtonTapped(_ sender: UIButton) {
+  }
 }
 
 // MARK: Private
