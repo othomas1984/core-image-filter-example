@@ -10,9 +10,19 @@ import UIKit
 
 class ViewController: UIViewController {
 
+  @IBOutlet weak var imageView: UIImageView!
   override func viewDidLoad() {
     super.viewDidLoad()
-    // Do any additional setup after loading the view, typically from a nib.
+    guard let imageURL = Bundle.main.url(forResource: "image", withExtension: "png"),
+      let originalImage = CIImage(contentsOf: imageURL),
+      let sepiaFilter = CIFilter(name: "CISepiaTone") else { return }
+    
+    sepiaFilter.setValue(originalImage, forKey: kCIInputImageKey)
+    sepiaFilter.setValue(0.5, forKey: kCIInputIntensityKey)
+    
+    guard let outputImage = sepiaFilter.outputImage else { return }
+    imageView.image = UIImage(ciImage: outputImage)
+    
   }
 
   override func didReceiveMemoryWarning() {

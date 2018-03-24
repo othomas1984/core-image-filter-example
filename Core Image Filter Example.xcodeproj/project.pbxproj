@@ -14,6 +14,7 @@
 		33448FE82065DD7800312B35 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 33448FE62065DD7800312B35 /* LaunchScreen.storyboard */; };
 		33448FF32065DD7800312B35 /* Core_Image_Filter_ExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33448FF22065DD7800312B35 /* Core_Image_Filter_ExampleTests.swift */; };
 		33448FFE2065DD7800312B35 /* Core_Image_Filter_ExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33448FFD2065DD7800312B35 /* Core_Image_Filter_ExampleUITests.swift */; };
+		3344900D2065DECF00312B35 /* image.png in Resources */ = {isa = PBXBuildFile; fileRef = 3344900C2065DECF00312B35 /* image.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		33448FF92065DD7800312B35 /* Core Image Filter ExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Core Image Filter ExampleUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		33448FFD2065DD7800312B35 /* Core_Image_Filter_ExampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Core_Image_Filter_ExampleUITests.swift; sourceTree = "<group>"; };
 		33448FFF2065DD7800312B35 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3344900C2065DECF00312B35 /* image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +80,7 @@
 			isa = PBXGroup;
 			children = (
 				33448FDC2065DD7800312B35 /* Core Image Filter Example */,
+				3344900B2065DEC100312B35 /* Resources */,
 				33448FF12065DD7800312B35 /* Core Image Filter ExampleTests */,
 				33448FFC2065DD7800312B35 /* Core Image Filter ExampleUITests */,
 				33448FDB2065DD7800312B35 /* Products */,
@@ -123,6 +126,14 @@
 				33448FFF2065DD7800312B35 /* Info.plist */,
 			);
 			path = "Core Image Filter ExampleUITests";
+			sourceTree = "<group>";
+		};
+		3344900B2065DEC100312B35 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				3344900C2065DECF00312B35 /* image.png */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -235,6 +246,7 @@
 				33448FE82065DD7800312B35 /* LaunchScreen.storyboard in Resources */,
 				33448FE52065DD7800312B35 /* Assets.xcassets in Resources */,
 				33448FE32065DD7800312B35 /* Main.storyboard in Resources */,
+				3344900D2065DECF00312B35 /* image.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
