@@ -20,7 +20,7 @@ class ViewController: UIViewController {
   var throttleTimer: Timer?
   var throttleTimerLastFire: Date = Date(timeIntervalSinceNow: 0)
   var throttleInterval = 0.07
-  var originalImageStats = (orientation: UIImageOrientation.up, scale: CGFloat(1), size: CGSize.zero)
+  var orientation = UIImageOrientation.up
 
   func sepiaImage(completion: @escaping (CGImage?) -> Void) {
     guard let sepiafilter = CIFilter(name: "CISepiaTone", withInputParameters: [
@@ -69,7 +69,7 @@ extension ViewController {
     let updateFilteredImage = {
       self.sepiaImage { (image) in
         guard let cgImage = image else { return }
-        let uiImage = UIImage(cgImage: cgImage, scale: self.originalImageStats.scale, orientation: self.originalImageStats.orientation)
+        let uiImage = UIImage(cgImage: cgImage, scale: 1.0, orientation: self.orientation)
         self.imageView.image = uiImage
         completion?()
       }
@@ -94,11 +94,9 @@ extension ViewController {
   }
   
   private func createThumbnail() {
-    let scale = max(min(Double(view.bounds.width / originalImageStats.size.width), 1.0), 0.20)
-    guard scale != 1,
-      let scaleFilter = CIFilter(name: "CILanczosScaleTransform", withInputParameters: [
+    guard let scaleFilter = CIFilter(name: "CILanczosScaleTransform", withInputParameters: [
         kCIInputImageKey: originalImage,
-        kCIInputScaleKey: scale,
+        kCIInputScaleKey: thumbnailScale,
         kCIInputAspectRatioKey: 1.0
         ]),
       let scaled = scaleFilter.outputImage
@@ -108,13 +106,33 @@ extension ViewController {
     }
     thumbnailImage = scaled
   }
+  
+  var thumbnailScale: CGFloat {
+    let narrowestPartOfOriginalImage = min(originalImage.extent.width, originalImage.extent.height)
+    return min(view.bounds.width / narrowestPartOfOriginalImage, 1.0)
+  }
+  
+  private func animateNewImageAspectRatio() {
+    guard let aspect = imageViewAspectRatio else { return }
+    imageAspectRatioConstraint.isActive = false
+    imageAspectRatioConstraint = imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor, multiplier: aspect)
+    imageAspectRatioConstraint.isActive = true
+    UIView.animate(withDuration: 0.8, delay: 0, options: .curveEaseInOut, animations: {
+      self.view.layoutIfNeeded()
+    }, completion: nil)
+  }
+  
+  private var imageViewAspectRatio: CGFloat? {
+    guard let size = imageView.image?.size else { return nil }
+    return min(max(size.width / size.height, 2/3), 3/2)
+  }
 }
 
 // MARK: UIImagePickerControllerDelegate
 extension ViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
   func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
     if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
-      originalImageStats = (image.imageOrientation, image.scale, image.size)
+      orientation = image.imageOrientation
       originalImage = CIImage(image: image)
     }
     updateImage(skipThrottle: true) {
@@ -122,16 +140,6 @@ extension ViewController: UIImagePickerControllerDelegate, UINavigationControlle
         self.animateNewImageAspectRatio()
       }
     }
-  }
-  
-  private func animateNewImageAspectRatio() {
-    let imageAspectMultiplier = min(max(originalImageStats.size.width / originalImageStats.size.height, 2/3), 3/2)
-    imageAspectRatioConstraint.isActive = false
-    imageAspectRatioConstraint = imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor, multiplier: imageAspectMultiplier)
-    imageAspectRatioConstraint.isActive = true
-    UIView.animate(withDuration: 0.8, delay: 0, options: .curveEaseInOut, animations: {
-      self.view.layoutIfNeeded()
-    }, completion: nil)
   }
   
   func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
