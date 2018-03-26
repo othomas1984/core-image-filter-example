@@ -26,27 +26,36 @@
                                 </constraints>
                             </imageView>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="3d5-G6-fiI">
-                                <rect key="frame" x="14" y="382.5" width="347" height="31"/>
+                                <rect key="frame" x="28" y="395" width="319" height="31"/>
                                 <connections>
                                     <action selector="intensitySliderDidChangeValue:" destination="BYZ-38-t0r" eventType="valueChanged" id="f44-Vd-knt"/>
                                 </connections>
                             </slider>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3j5-ai-P9R">
-                                <rect key="frame" x="270" y="420.5" width="89" height="30"/>
+                                <rect key="frame" x="270" y="445" width="89" height="30"/>
                                 <state key="normal" title="Photo Album"/>
                                 <connections>
                                     <action selector="photoAlbumButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="FGN-oQ-jyb"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bVc-Jy-CEB">
+                                <rect key="frame" x="16" y="445" width="103" height="30"/>
+                                <state key="normal" title="Save to Photos"/>
+                                <connections>
+                                    <action selector="saveButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="wK3-iZ-Rxb"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="3d5-G6-fiI" firstAttribute="top" secondItem="kRF-te-EGZ" secondAttribute="bottom" constant="8" symbolic="YES" id="1UK-GU-KZy"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="3d5-G6-fiI" secondAttribute="trailing" constant="16" id="L6z-Z5-7Dn"/>
+                            <constraint firstItem="3d5-G6-fiI" firstAttribute="top" secondItem="kRF-te-EGZ" secondAttribute="bottom" constant="20" id="1UK-GU-KZy"/>
+                            <constraint firstItem="bVc-Jy-CEB" firstAttribute="baseline" secondItem="3j5-ai-P9R" secondAttribute="baseline" id="DoY-a6-a1f"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="3d5-G6-fiI" secondAttribute="trailing" constant="30" id="L6z-Z5-7Dn"/>
+                            <constraint firstItem="bVc-Jy-CEB" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="SZc-a3-Rwu"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="3j5-ai-P9R" secondAttribute="trailing" constant="16" id="VHI-g3-JUh"/>
-                            <constraint firstItem="3j5-ai-P9R" firstAttribute="top" secondItem="3d5-G6-fiI" secondAttribute="bottom" constant="8" symbolic="YES" id="aUj-UL-rIn"/>
+                            <constraint firstItem="3j5-ai-P9R" firstAttribute="top" secondItem="3d5-G6-fiI" secondAttribute="bottom" constant="20" id="aUj-UL-rIn"/>
                             <constraint firstAttribute="top" secondItem="kRF-te-EGZ" secondAttribute="top" id="c0a-9i-WuZ"/>
-                            <constraint firstItem="3d5-G6-fiI" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="cMW-QH-wki"/>
+                            <constraint firstItem="3d5-G6-fiI" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="30" id="cMW-QH-wki"/>
                             <constraint firstItem="kRF-te-EGZ" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="fIz-N8-BW8"/>
                             <constraint firstItem="kRF-te-EGZ" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="qwK-hL-rVI"/>
                         </constraints>
