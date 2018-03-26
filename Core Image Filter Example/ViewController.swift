@@ -14,6 +14,9 @@ class ViewController: UIViewController {
   var originalImage: CIImage!
   var filterIntensity: Float = 0.5
   
+  var throttleTimer: Timer?
+  var throttleTimerLastFire: Date = Date(timeIntervalSinceNow: 0)
+  var throttleInterval = 0.07
   var originalImageStats = (orientation: UIImageOrientation.up, scale: CGFloat(1))
   var sepiaImage: CGImage? {
     guard let outputImage = sepiafilter?.outputImage,
@@ -50,10 +53,18 @@ extension ViewController {
 // MARK: Private
 extension ViewController {
   private func updateImage() {
-    sepiafilter?.setValue(filterIntensity, forKey: kCIInputIntensityKey)
-    guard let cgImage = sepiaImage else { return }
+    throttleTimer?.invalidate()
+    throttleTimer = Timer.scheduledTimer(withTimeInterval: max(throttleTimerLastFire.timeIntervalSinceNow + throttleInterval, 0), repeats: false) { (timer) in
+      self.throttleTimerLastFire = Date(timeIntervalSinceNow: 0)
+      DispatchQueue.global(qos: .userInteractive).async {
+        self.sepiafilter?.setValue(self.filterIntensity, forKey: kCIInputIntensityKey)
+        guard let cgImage = self.sepiaImage else { return }
+        DispatchQueue.main.async {
           let uiImage = UIImage(cgImage: cgImage, scale: self.originalImageStats.scale, orientation: self.originalImageStats.orientation)
           self.imageView.image = uiImage
+        }
+      }
+    }
   }
   
   private func setupInitialView() {
