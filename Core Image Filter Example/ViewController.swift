@@ -65,15 +65,23 @@ extension ViewController {
 
 // MARK: Private
 extension ViewController {
-  private func updateImage() {
-    throttleTimer?.invalidate()
-    throttleTimer = Timer.scheduledTimer(withTimeInterval: max(throttleTimerLastFire.timeIntervalSinceNow + throttleInterval, 0), repeats: false) { (timer) in
-      self.throttleTimerLastFire = Date(timeIntervalSinceNow: 0)
+  private func updateImage(skipThrottle: Bool = false, completion: (() -> Void)? = nil) {
+    let updateFilteredImage = {
       self.sepiaImage { (image) in
         guard let cgImage = image else { return }
         let uiImage = UIImage(cgImage: cgImage, scale: self.originalImageStats.scale, orientation: self.originalImageStats.orientation)
         self.imageView.image = uiImage
+        completion?()
       }
+    }
+    if skipThrottle {
+      updateFilteredImage()
+      return
+    }
+    throttleTimer?.invalidate()
+    throttleTimer = Timer.scheduledTimer(withTimeInterval: max(throttleTimerLastFire.timeIntervalSinceNow + throttleInterval, 0), repeats: false) { (timer) in
+      self.throttleTimerLastFire = Date(timeIntervalSinceNow: 0)
+      updateFilteredImage()
     }
   }
   
@@ -109,9 +117,10 @@ extension ViewController: UIImagePickerControllerDelegate, UINavigationControlle
       originalImageStats = (image.imageOrientation, image.scale, image.size)
       originalImage = CIImage(image: image)
     }
-    updateImage()
-    dismiss(animated: true) {
-      self.animateNewImageAspectRatio()
+    updateImage(skipThrottle: true) {
+      self.dismiss(animated: true) {
+        self.animateNewImageAspectRatio()
+      }
     }
   }
   
