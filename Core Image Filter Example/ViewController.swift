@@ -14,6 +14,7 @@ class ViewController: UIViewController {
   var originalImage: CIImage!
   var filterIntensity: Float = 0.5
   
+  var originalImageStats = (orientation: UIImageOrientation.up, scale: CGFloat(1))
   var sepiaImage: CGImage? {
     guard let outputImage = sepiafilter?.outputImage,
       let filterExtent = sepiafilter?.outputImage?.extent else { return nil }
@@ -51,7 +52,8 @@ extension ViewController {
   private func updateImage() {
     sepiafilter?.setValue(filterIntensity, forKey: kCIInputIntensityKey)
     guard let cgImage = sepiaImage else { return }
-    imageView.image = UIImage(cgImage: cgImage)
+          let uiImage = UIImage(cgImage: cgImage, scale: self.originalImageStats.scale, orientation: self.originalImageStats.orientation)
+          self.imageView.image = uiImage
   }
   
   private func setupInitialView() {
@@ -71,6 +73,7 @@ extension ViewController {
 extension ViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
   func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
     if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
+      originalImageStats = (image.imageOrientation, image.scale)
       originalImage = CIImage(image: image)
     }
     sepiafilter?.setValue(originalImage, forKey: kCIInputImageKey)
