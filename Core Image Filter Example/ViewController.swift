@@ -12,12 +12,13 @@ class ViewController: UIViewController {
   var context: CIContext = CIContext(options: nil)
   var sepiafilter: CIFilter? = CIFilter(name: "CISepiaTone")
   var originalImage: CIImage!
+  var originalScaledImage: CIImage!
   var filterIntensity: Float = 0.5
-  
   var throttleTimer: Timer?
   var throttleTimerLastFire: Date = Date(timeIntervalSinceNow: 0)
   var throttleInterval = 0.07
   var originalImageStats = (orientation: UIImageOrientation.up, scale: CGFloat(1))
+
   @IBOutlet weak var imageAspectRatioConstraint: NSLayoutConstraint!
   var sepiaImage: CGImage? {
     guard let outputImage = sepiafilter?.outputImage,
@@ -88,7 +89,9 @@ extension ViewController: UIImagePickerControllerDelegate, UINavigationControlle
       originalImageStats = (image.imageOrientation, image.scale)
       originalImage = CIImage(image: image)
     }
-    sepiafilter?.setValue(originalImage, forKey: kCIInputImageKey)
+    scaleOriginalIfNecessary()
+    sepiafilter?.setValue(originalScaledImage, forKey: kCIInputImageKey)
+
     updateImage()
     dismiss(animated: true) {
       self.animateNewImageAspectRatio()
@@ -105,6 +108,19 @@ extension ViewController: UIImagePickerControllerDelegate, UINavigationControlle
     }, completion: nil)
   }
   
+  private func scaleOriginalIfNecessary() {
+    originalScaledImage = originalImage
+    let scale = max(min(Double(view.bounds.width / originalImage.extent.width * 4), 1.0), 0.20)
+    if scale != 1 {
+      let scaleFilter = CIFilter(name: "CILanczosScaleTransform")
+      scaleFilter?.setValue(originalImage, forKey: kCIInputImageKey)
+      scaleFilter?.setValue(scale, forKey: "inputScale")
+      scaleFilter?.setValue(1.0, forKey: "inputAspectRatio")
+      if let scaled = scaleFilter?.outputImage {
+        originalScaledImage = scaled
+      }
+    }
+  }
   func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
     dismiss(animated: true)
   }
