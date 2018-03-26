@@ -17,7 +17,7 @@ class ViewController: UIViewController {
   var throttleTimer: Timer?
   var throttleTimerLastFire: Date = Date(timeIntervalSinceNow: 0)
   var throttleInterval = 0.07
-  var originalImageStats = (orientation: UIImageOrientation.up, scale: CGFloat(1))
+  var originalImageStats = (orientation: UIImageOrientation.up, scale: CGFloat(1), size: CGSize.zero)
 
   @IBOutlet weak var imageAspectRatioConstraint: NSLayoutConstraint!
   var sepiaImage: CGImage? {
@@ -86,7 +86,7 @@ extension ViewController {
 extension ViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
   func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
     if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
-      originalImageStats = (image.imageOrientation, image.scale)
+      originalImageStats = (image.imageOrientation, image.scale, image.size)
       originalImage = CIImage(image: image)
     }
     scaleOriginalIfNecessary()
@@ -99,7 +99,7 @@ extension ViewController: UIImagePickerControllerDelegate, UINavigationControlle
   }
   
   private func animateNewImageAspectRatio() {
-    let imageAspectMultiplier = min(max(originalImage.extent.width / originalImage.extent.size.height, 2/3), 3/2)
+    let imageAspectMultiplier = min(max(originalImageStats.size.width / originalImageStats.size.height, 2/3), 3/2)
     imageAspectRatioConstraint.isActive = false
     imageAspectRatioConstraint = imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor, multiplier: imageAspectMultiplier)
     imageAspectRatioConstraint.isActive = true
@@ -110,7 +110,7 @@ extension ViewController: UIImagePickerControllerDelegate, UINavigationControlle
   
   private func scaleOriginalIfNecessary() {
     originalScaledImage = originalImage
-    let scale = max(min(Double(view.bounds.width / originalImage.extent.width * 4), 1.0), 0.20)
+    let scale = max(min(Double(view.bounds.width / originalImageStats.size.width), 1.0), 0.20)
     if scale != 1 {
       let scaleFilter = CIFilter(name: "CILanczosScaleTransform")
       scaleFilter?.setValue(originalImage, forKey: kCIInputImageKey)
