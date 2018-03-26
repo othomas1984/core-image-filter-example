@@ -53,6 +53,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="imageAspectRatioConstraint" destination="EGV-L1-nTr" id="J45-Np-GaR"/>
                         <outlet property="imageView" destination="kRF-te-EGZ" id="P5R-Ur-DNs"/>
                         <outlet property="intensitySlider" destination="3d5-G6-fiI" id="15H-vh-X0M"/>
                     </connections>

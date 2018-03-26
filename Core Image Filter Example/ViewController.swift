@@ -18,6 +18,7 @@ class ViewController: UIViewController {
   var throttleTimerLastFire: Date = Date(timeIntervalSinceNow: 0)
   var throttleInterval = 0.07
   var originalImageStats = (orientation: UIImageOrientation.up, scale: CGFloat(1))
+  @IBOutlet weak var imageAspectRatioConstraint: NSLayoutConstraint!
   var sepiaImage: CGImage? {
     guard let outputImage = sepiafilter?.outputImage,
       let filterExtent = sepiafilter?.outputImage?.extent else { return nil }
@@ -89,7 +90,19 @@ extension ViewController: UIImagePickerControllerDelegate, UINavigationControlle
     }
     sepiafilter?.setValue(originalImage, forKey: kCIInputImageKey)
     updateImage()
-    dismiss(animated: true)
+    dismiss(animated: true) {
+      self.animateNewImageAspectRatio()
+    }
+  }
+  
+  private func animateNewImageAspectRatio() {
+    let imageAspectMultiplier = min(max(originalImage.extent.width / originalImage.extent.size.height, 2/3), 3/2)
+    imageAspectRatioConstraint.isActive = false
+    imageAspectRatioConstraint = imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor, multiplier: imageAspectMultiplier)
+    imageAspectRatioConstraint.isActive = true
+    UIView.animate(withDuration: 0.8, delay: 0, options: .curveEaseInOut, animations: {
+      self.view.layoutIfNeeded()
+    }, completion: nil)
   }
   
   func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
